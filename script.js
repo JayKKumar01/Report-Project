@@ -143,11 +143,21 @@ function updateTransform() {
 zoomSlider.addEventListener("input", () => {
     scale = parseFloat(zoomSlider.value);
 
+
+    // Get movement limits
+    const { maxX, maxY } = getMovementLimits();
+
+    // Adjust translation based on limits
+    translateX = Math.max(-maxX, Math.min(maxX, translateX));
+    translateY = Math.max(-maxY, Math.min(maxY, translateY));
+
     // Reset translation for scale 1
     if (scale === 1) {
         translateX = 0;
         translateY = 0;
     }
+
+
 
     // Log details
     console.log("Zoom Adjusted:");

@@ -1,12 +1,3 @@
-// Sample data for items and their associated images
-const itemImageMap = new Map([
-    ["Item 1", ["4.jpg", "3.jpg", "5.jpg"]],
-    ["Item 2", ["2.jpg", "4.jpg", "6.jpg"]],
-    ["Item 3", ["2.jpg", "1.jpg", "4.jpg"]],
-    ["Item 4", ["3.jpg", "5.jpg"]],
-    ["Item 5", ["1.jpg", "2.jpg", "3.jpg", "5.jpg"]]
-]);
-
 // Default transformation values
 let scale = 1;
 let translateX = 0;
@@ -73,12 +64,11 @@ function showPage(pageIndex) {
         resetTransform();
     }
 }
-
-// Function to load a new image set for an item
+// Example of usage with new structure
 function showImageSet(itemName) {
-    const imageSet = itemImageMap.get(itemName);
-    if (imageSet && imageSet.length > 0) {
-        currentImageSet = imageSet.map(name => `items/${name}`);
+    const itemData = itemImageMap.get(itemName);
+    if (itemData && itemData.validationImages && itemData.validationImages.length > 0) {
+        currentImageSet = itemData.validationImages.map(name => `items/${name}`);
         totalPages = currentImageSet.length;
         currentPageIndex = 0;
         showPage(currentPageIndex);
@@ -156,17 +146,17 @@ function getMovementLimits() {
 }
 
 // Function to handle movement and restrict boundaries
-function moveImage(direction) {
+function moveImage(direction,factor) {
     const { maxX, maxY } = getMovementLimits();
 
     if (direction === "left") {
-        translateX = Math.min(maxX, translateX + 10);
+        translateX = Math.min(maxX, translateX + 10 * factor);
     } else if (direction === "right") {
-        translateX = Math.max(-maxX, translateX - 10);
+        translateX = Math.max(-maxX, translateX - 10 * factor);
     } else if (direction === "up") {
-        translateY = Math.min(maxY, translateY + 10);
+        translateY = Math.min(maxY, translateY + 10 * factor);
     } else if (direction === "down") {
-        translateY = Math.max(-maxY, translateY - 10);
+        translateY = Math.max(-maxY, translateY - 10 * factor);
     }
 
     console.log("Movement Debugging:", { translateX, translateY, maxX, maxY });
@@ -174,25 +164,26 @@ function moveImage(direction) {
 }
 
 // Attach event listeners for movement buttons
-document.getElementById("move-left").addEventListener("click", () => moveImage("left"));
-document.getElementById("move-right").addEventListener("click", () => moveImage("right"));
-document.getElementById("move-up").addEventListener("click", () => moveImage("up"));
-document.getElementById("move-down").addEventListener("click", () => moveImage("down"));
+document.getElementById("move-left").addEventListener("click", () => moveImage("left",1));
+document.getElementById("move-right").addEventListener("click", () => moveImage("right",1));
+document.getElementById("move-up").addEventListener("click", () => moveImage("up",1));
+document.getElementById("move-down").addEventListener("click", () => moveImage("down",1));
 
 // Keyboard event listeners for movement (arrow keys)
 document.addEventListener("keydown", (event) => {
+    const moveFactor = 0.2;
     switch (event.key) {
         case "ArrowLeft":
-            moveImage("left");
+            moveImage("left",moveFactor);
             break;
         case "ArrowRight":
-            moveImage("right");
+            moveImage("right",moveFactor);
             break;
         case "ArrowUp":
-            moveImage("up");
+            moveImage("up",moveFactor);
             break;
         case "ArrowDown":
-            moveImage("down");
+            moveImage("down",moveFactor);
             break;
         case "+":
             zoomImage("in");

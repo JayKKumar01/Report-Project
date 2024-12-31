@@ -27,10 +27,6 @@ let currentPageIndex = 0;
 let totalPages = 1;
 let currentImageSet = [];
 
-
-
-
-
 // Function to reset zoom and position
 function resetTransform() {
     scale = 1;
@@ -53,21 +49,16 @@ nextPageButton.addEventListener("click", () => {
     }
 });
 
+// Function to load and adjust the image
 function loadImageAndAdjust(imageSrc) {
-    // Create a temporary image element to calculate dimensions
     let tempImage = new Image();
     tempImage.src = imageSrc;
 
     tempImage.onload = function () {
-        // Adjust the container size based on the image dimensions
         adjustContainerSize(tempImage);
-
-        // After the temp image loads, update the src of the displayed image
-        displayedImage.src = imageSrc;  // Assign the actual source to the displayed image
-
-        // Remove the temporary image from memory (this is optional but recommended)
-        tempImage.onload = null;  // Unbind the event handler
-        tempImage = null;  // Clean up the temporary image object
+        displayedImage.src = imageSrc;
+        tempImage.onload = null;
+        tempImage = null;
     };
 }
 
@@ -98,14 +89,10 @@ function showImageSet(itemName) {
 
 // Function to adjust the container size based on the image ratio
 function adjustContainerSize(image) {
-    // Calculate aspect ratio of the image (width / height)
     const aspectRatio = image.width / image.height;
-
     containerHeight = Math.floor(Math.min(480, 854 / aspectRatio));
     containerWidth = Math.floor(containerHeight * aspectRatio);
 
-
-    // Set the new dimensions on the container
     container.style.width = `${containerWidth}px`;
     container.style.height = `${containerHeight}px`;
 
@@ -126,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
         itemList.appendChild(listItem);
     });
 
-    // Automatically select and load the first item
     const firstItem = itemList.querySelector("li");
     if (firstItem) {
         firstItem.classList.add("selected");
@@ -142,66 +128,46 @@ function updateTransform() {
 // Zoom slider functionality
 zoomSlider.addEventListener("input", () => {
     scale = parseFloat(zoomSlider.value);
-
-
-    // Get movement limits
     const { maxX, maxY } = getMovementLimits();
-
-    // Adjust translation based on limits
     translateX = Math.max(-maxX, Math.min(maxX, translateX));
     translateY = Math.max(-maxY, Math.min(maxY, translateY));
 
-    // Reset translation for scale 1
     if (scale === 1) {
         translateX = 0;
         translateY = 0;
     }
 
-
-
-    // Log details
-    console.log("Zoom Adjusted:");
-    console.log("Scale:", scale);
-
-    // Apply the transformation
+    console.log("Zoom Adjusted:", { scale });
     updateTransform();
 });
 
-
+// Function to calculate movement limits
 function getMovementLimits() {
-    // Zoomed dimensions of the displayed image
     const zoomedWidth = containerWidth * scale;
     const zoomedHeight = containerHeight * scale;
-
-    // Calculate the visible movement limits
-    const maxX = Math.max(0, ((zoomedWidth - containerWidth) / (scale * 2)));
-    const maxY = Math.max(0, ((zoomedHeight - containerHeight) / (scale * 2)));
+    const maxX = Math.max(0, (zoomedWidth - containerWidth) / (scale * 2));
+    const maxY = Math.max(0, (zoomedHeight - containerHeight) / (scale * 2));
 
     return { maxX, maxY };
 }
 
-// Function to handle movement and restrict beyond image boundaries
+// Function to handle movement and restrict boundaries
 function moveImage(direction) {
     const { maxX, maxY } = getMovementLimits();
 
     if (direction === "left") {
-        translateX = Math.min(maxX, translateX + 10); // Move left
+        translateX = Math.min(maxX, translateX + 10);
     } else if (direction === "right") {
-        translateX = Math.max(-maxX, translateX - 10); // Move right
+        translateX = Math.max(-maxX, translateX - 10);
     } else if (direction === "up") {
-        // Move up but restricted by maxY
         translateY = Math.min(maxY, translateY + 10);
     } else if (direction === "down") {
-        // Move down but restricted by maxY
         translateY = Math.max(-maxY, translateY - 10);
     }
 
-    console.log('Movement Debugging:');
-    console.log('translateX:', translateX, 'translateY:', translateY);
-    console.log('maxX:', maxX, 'maxY:', maxY);
+    console.log("Movement Debugging:", { translateX, translateY, maxX, maxY });
     updateTransform();
 }
-
 
 // Attach event listeners for movement buttons
 document.getElementById("move-left").addEventListener("click", () => moveImage("left"));

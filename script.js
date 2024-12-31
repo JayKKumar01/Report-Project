@@ -1,7 +1,7 @@
 // Sample data for items and their associated images
 const itemImageMap = new Map([
     ["Item 1", ["4.jpg", "3.jpg", "5.jpg"]],
-    ["Item 2", ["2.jpg", "4.jpg"]],
+    ["Item 2", ["2.jpg", "4.jpg", "6.jpg"]],
     ["Item 3", ["2.jpg", "1.jpg", "4.jpg"]],
     ["Item 4", ["3.jpg", "5.jpg"]],
     ["Item 5", ["1.jpg", "2.jpg", "3.jpg", "5.jpg"]]
@@ -12,14 +12,15 @@ let scale = 1;
 let translateX = 0;
 let translateY = 0;
 
-const containerWidth = 854;
-const containerHeight = 480;
+let containerWidth = 854;
+let containerHeight = 480;
 
 const zoomSlider = document.getElementById("zoom-slider");
 const displayedImage = document.getElementById("displayedImage");
 const prevPageButton = document.getElementById("prev-page");
 const nextPageButton = document.getElementById("next-page");
 const pageInfo = document.getElementById("page-info");
+const container = document.querySelector('.image-viewer');
 
 // Variables for pagination
 let currentPageIndex = 0;
@@ -52,11 +53,29 @@ nextPageButton.addEventListener("click", () => {
     }
 });
 
+function loadImageAndAdjust(imageSrc) {
+    // Create a temporary image element to calculate dimensions
+    let tempImage = new Image();
+    tempImage.src = imageSrc;
+
+    tempImage.onload = function () {
+        // Adjust the container size based on the image dimensions
+        adjustContainerSize(tempImage);
+
+        // After the temp image loads, update the src of the displayed image
+        displayedImage.src = imageSrc;  // Assign the actual source to the displayed image
+
+        // Remove the temporary image from memory (this is optional but recommended)
+        tempImage.onload = null;  // Unbind the event handler
+        tempImage = null;  // Clean up the temporary image object
+    };
+}
+
 // Function to show a specific page
 function showPage(pageIndex) {
     if (pageIndex >= 0 && pageIndex < totalPages) {
         currentPageIndex = pageIndex;
-        displayedImage.src = currentImageSet[pageIndex];
+        loadImageAndAdjust(currentImageSet[pageIndex]);
         pageInfo.innerText = `Page ${pageIndex + 1} of ${totalPages}`;
         prevPageButton.disabled = pageIndex === 0;
         nextPageButton.disabled = pageIndex === totalPages - 1;
@@ -75,6 +94,22 @@ function showImageSet(itemName) {
     } else {
         console.error(`No images found for item: ${itemName}`);
     }
+}
+
+// Function to adjust the container size based on the image ratio
+function adjustContainerSize(image) {
+    // Calculate aspect ratio of the image (width / height)
+    const aspectRatio = image.width / image.height;
+
+    containerHeight = Math.floor(Math.min(480, 854 / aspectRatio));
+    containerWidth = Math.floor(containerHeight * aspectRatio);
+
+
+    // Set the new dimensions on the container
+    container.style.width = `${containerWidth}px`;
+    container.style.height = `${containerHeight}px`;
+
+    console.log(`Updated container size: Width = ${containerWidth}px, Height = ${containerHeight}px`);
 }
 
 // Populate the item list dynamically
@@ -107,7 +142,7 @@ function updateTransform() {
 // Zoom slider functionality
 zoomSlider.addEventListener("input", () => {
     scale = parseFloat(zoomSlider.value);
-    
+
     // Reset translation for scale 1
     if (scale === 1) {
         translateX = 0;

@@ -68,10 +68,9 @@ p {
 /* Image Viewer Styling */
 .image-viewer {
     position: relative; /* Needed for positioning buttons inside */
-    width: 854px;  /* Fixed width */
-    height: 480px; /* Fixed height for 16:9 ratio */
-    border: 2px solid #ddd;
-    border-radius: 8px;
+    width: 640px;  /* Fixed width */
+    height: 360px; /* Fixed height for 16:9 ratio */
+    border-radius: 2px;
     background-color: #000; /* Black background for contrast */
     overflow: hidden;
     margin: auto;

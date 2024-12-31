@@ -26,18 +26,6 @@ let currentPageIndex = 0;
 let totalPages = 1;
 let currentImageSet = [];
 
-// Function to calculate movement limits
-// function getMovementLimits() {
-//     const zoomedWidth = containerWidth * scale;
-//     const zoomedHeight = containerHeight * scale;
-
-//     const maxX = Math.max(0, (zoomedWidth - containerWidth) / 2);
-//     const maxY = Math.max(0, (zoomedHeight - containerHeight) / 2);
-
-//     return { maxX, maxY };
-// }
-// Updated function to calculate movement limits based on actual image dimensions
-
 
 
 
@@ -50,6 +38,19 @@ function resetTransform() {
     zoomSlider.value = 1;
     updateTransform();
 }
+
+// Attach event listeners for page navigation
+prevPageButton.addEventListener("click", () => {
+    if (currentPageIndex > 0) {
+        showPage(currentPageIndex - 1);
+    }
+});
+
+nextPageButton.addEventListener("click", () => {
+    if (currentPageIndex < totalPages - 1) {
+        showPage(currentPageIndex + 1);
+    }
+});
 
 // Function to show a specific page
 function showPage(pageIndex) {

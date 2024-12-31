@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Interactive Report</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="item-list">
+            <h2>Items</h2>
+            <ul>
+                <li onclick="showImage('1.jpg')">Item 1</li>
+                <li onclick="showImage('2.jpg')">Item 2</li>
+                <li onclick="showImage('3.jpg')">Item 3</li>
+                <li onclick="showImage('4.jpg')">Item 4</li>
+                <li onclick="showImage('5.jpg')">Item 5</li>
+            </ul>
+        </aside>
+        <main class="content">
+            <div class="validation-buttons">
+                <button class="content-validation">Content Validation</button>
+                <button class="alignment-validation">Alignment Validation</button>
+            </div>
+            
+            
+            <!-- Image Viewer -->
+            <div class="image-viewer">
+                <img id="displayedImage" src="items/1.jpg" alt="Click an item to display image">
+                
+                <!-- Movement Buttons -->
+                <button id="move-up" class="move-btn move-up">↑</button>
+                <button id="move-down" class="move-btn move-down">↓</button>
+                <button id="move-left" class="move-btn move-left">←</button>
+                <button id="move-right" class="move-btn move-right">→</button>
+            </div>
+             <!-- Zoom Controls -->
+             <div class="zoom-controls">
+                <label for="zoom-slider">Zoom:</label>
+                <input id="zoom-slider" type="range" min="1" max="6" step="0.1" value="1">
+            </div>
+
+            <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+        <button id="prev-page" disabled>Previous</button>
+        <span id="page-info">Page 1 of 1</span>
+        <button id="next-page" disabled>Next</button>
+    </div>
+            
+           
+        </main>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>

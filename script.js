@@ -27,20 +27,20 @@ let totalPages = 1;
 let currentImageSet = [];
 
 // Function to calculate movement limits
-function getMovementLimits() {
-    const zoomedWidth = containerWidth * scale;
-    const zoomedHeight = containerHeight * scale;
+// function getMovementLimits() {
+//     const zoomedWidth = containerWidth * scale;
+//     const zoomedHeight = containerHeight * scale;
 
-    const maxX = Math.max(0, (zoomedWidth - containerWidth) / 2);
-    const maxY = Math.max(0, (zoomedHeight - containerHeight) / 2);
+//     const maxX = Math.max(0, (zoomedWidth - containerWidth) / 2);
+//     const maxY = Math.max(0, (zoomedHeight - containerHeight) / 2);
 
-    return { maxX, maxY };
-}
+//     return { maxX, maxY };
+// }
+// Updated function to calculate movement limits based on actual image dimensions
 
-// Function to update the transform property of the image
-function updateTransform() {
-    displayedImage.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
-}
+
+
+
 
 // Function to reset zoom and position
 function resetTransform() {
@@ -98,45 +98,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Function to update the transform property of the image
+function updateTransform() {
+    displayedImage.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+}
+
 // Zoom slider functionality
 zoomSlider.addEventListener("input", () => {
     scale = parseFloat(zoomSlider.value);
+    
+    // Reset translation for scale 1
+    if (scale === 1) {
+        translateX = 0;
+        translateY = 0;
+    }
+
+    // Log details
+    console.log("Zoom Adjusted:");
+    console.log("Scale:", scale);
+
+    // Apply the transformation
+    updateTransform();
+});
+
+
+function getMovementLimits() {
+    // Zoomed dimensions of the displayed image
+    const zoomedWidth = containerWidth * scale;
+    const zoomedHeight = containerHeight * scale;
+
+    // Calculate the visible movement limits
+    const maxX = Math.max(0, ((zoomedWidth - containerWidth) / (scale * 2)));
+    const maxY = Math.max(0, ((zoomedHeight - containerHeight) / (scale * 2)));
+
+    return { maxX, maxY };
+}
+
+// Function to handle movement and restrict beyond image boundaries
+function moveImage(direction) {
     const { maxX, maxY } = getMovementLimits();
-    translateX = Math.max(-maxX, Math.min(maxX, translateX));
-    translateY = Math.max(-maxY, Math.min(maxY, translateY));
+
+    if (direction === "left") {
+        translateX = Math.min(maxX, translateX + 10); // Move left
+    } else if (direction === "right") {
+        translateX = Math.max(-maxX, translateX - 10); // Move right
+    } else if (direction === "up") {
+        // Move up but restricted by maxY
+        translateY = Math.min(maxY, translateY + 10);
+    } else if (direction === "down") {
+        // Move down but restricted by maxY
+        translateY = Math.max(-maxY, translateY - 10);
+    }
+
+    console.log('Movement Debugging:');
+    console.log('translateX:', translateX, 'translateY:', translateY);
+    console.log('maxX:', maxX, 'maxY:', maxY);
     updateTransform();
-});
+}
 
-// Movement buttons logic
-document.getElementById("move-left").addEventListener("click", () => {
-    const { maxX } = getMovementLimits();
-    translateX = Math.min(maxX, translateX + 10);
-    updateTransform();
-});
 
-document.getElementById("move-right").addEventListener("click", () => {
-    const { maxX } = getMovementLimits();
-    translateX = Math.max(-maxX, translateX - 10);
-    updateTransform();
-});
-
-document.getElementById("move-up").addEventListener("click", () => {
-    const { maxY } = getMovementLimits();
-    translateY = Math.min(maxY, translateY + 10);
-    updateTransform();
-});
-
-document.getElementById("move-down").addEventListener("click", () => {
-    const { maxY } = getMovementLimits();
-    translateY = Math.max(-maxY, translateY - 10);
-    updateTransform();
-});
-
-// Navigation buttons logic
-prevPageButton.addEventListener("click", () => {
-    if (currentPageIndex > 0) showPage(currentPageIndex - 1);
-});
-
-nextPageButton.addEventListener("click", () => {
-    if (currentPageIndex < totalPages - 1) showPage(currentPageIndex + 1);
-});
+// Attach event listeners for movement buttons
+document.getElementById("move-left").addEventListener("click", () => moveImage("left"));
+document.getElementById("move-right").addEventListener("click", () => moveImage("right"));
+document.getElementById("move-up").addEventListener("click", () => moveImage("up"));
+document.getElementById("move-down").addEventListener("click", () => moveImage("down"));

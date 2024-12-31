@@ -70,26 +70,6 @@ function showPage(pageIndex) {
     }
 }
 
-// Function to load images for the selected item and section (validation or alignment)
-// function showImageSet(itemName, validationType) {
-//     const itemData = itemImageMap.get(itemName);
-//     if (itemData && itemData[validationType] && itemData[validationType].length > 0) {
-//         if (validationType === "validationImages") {
-//             currentImageSet = itemData.validationImages.map(name => `items/${name}`);
-//             totalPages = currentImageSet.length;
-//         }
-//         else if (validationType === "alignmentImages") {
-//             // Load the first image of each pair in the alignmentImages array
-//             currentImageSet = itemData.alignmentImages.map(pair => `items/${pair[0]}`);
-//             totalPages = currentImageSet.length; // Total pages now equals the number of pairs
-//         }
-//         currentPageIndex = 0;
-//         showPage(currentPageIndex);
-//     } else {
-//         console.error(`No images found for item: ${itemName} under ${validationType}`);
-//     }
-// }
-
 // Generalized function to load the appropriate image set based on validation or alignment section
 function showImageSet(itemName, section) {
     const itemData = itemImageMap.get(itemName);
@@ -169,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     contentValidationButton.addEventListener("click", () => sectionButtonHandler('validation', contentValidationButton, alignmentValidationButton));
     alignmentValidationButton.addEventListener("click", () => sectionButtonHandler('alignment', alignmentValidationButton, contentValidationButton));
 
+    setupAlignmentHold();
 });
 
 
@@ -270,3 +251,38 @@ function zoomImage(action) {
     handleZoom();
     zoomSlider.value = scale;
 }
+
+
+// Function to handle alignment preview on hold
+function setupAlignmentHold() {
+    // Add event listeners for hold behavior
+    displayedImage.addEventListener("mousedown", () => showSecondImage(currentPageIndex));
+    displayedImage.addEventListener("mouseup", () => resetImage(currentPageIndex));
+    displayedImage.addEventListener("mouseleave", () => resetImage(currentPageIndex));// Reset if the cursor leaves the image
+}
+
+// Function to show the second image of the pair
+function showSecondImage(index) {
+    console.log("step 1")
+    if (lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
+    console.log("step 2")
+    const itemData = itemImageMap.get(currentSelectedItem);
+    if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
+        console.log("step 3")
+        const secondImage = itemData.alignmentImages[index][1];
+        const src = `items/${secondImage}`; // Replace displayedImage source
+        loadImageAndAdjust(src);
+    }
+}
+
+// Function to reset the image to the first in the pair
+function resetImage(index) {
+    if (lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
+    const itemData = itemImageMap.get(currentSelectedItem);
+    if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
+        const firstImage = itemData.alignmentImages[index][0];
+        const src = `items/${firstImage}`; // Replace displayedImage source
+        loadImageAndAdjust(src);
+    }
+}
+

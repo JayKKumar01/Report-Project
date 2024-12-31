@@ -263,12 +263,9 @@ function setupAlignmentHold() {
 
 // Function to show the second image of the pair
 function showSecondImage(index) {
-    console.log("step 1")
     if (lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
-    console.log("step 2")
     const itemData = itemImageMap.get(currentSelectedItem);
     if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
-        console.log("step 3")
         const secondImage = itemData.alignmentImages[index][1];
         const src = `items/${secondImage}`; // Replace displayedImage source
         loadImageAndAdjust(src);

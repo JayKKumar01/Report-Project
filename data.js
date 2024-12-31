@@ -1,42 +1,43 @@
-const itemImageMap = new Map([
-    ["Item A", {
-        validationImages: ["1.jpg", "2.jpg", "3.jpg"], // Example images to show for validation
-        alignmentImages: [
-            ["1.jpg", "2.jpg"],
-            ["2.jpg", "3.jpg"],
-            ["3.jpg", "4.jpg"]
-        ]
-    }],
-    ["Item B", {
-        validationImages: ["4.jpg", "5.jpg", "6.jpg"], 
-        alignmentImages: [
-            ["4.jpg", "5.jpg"],
-            ["5.jpg", "6.jpg"],
-            ["4.jpg", "6.jpg"]
-        ]
-    }],
-    ["Item C", {
-        validationImages: ["2.jpg", "1.jpg", "5.jpg"],
-        alignmentImages: [
-            ["2.jpg", "1.jpg"],
-            ["1.jpg", "5.jpg"],
-            ["5.jpg", "2.jpg"]
-        ]
-    }],
-    ["Item D", {
-        validationImages: ["3.jpg", "4.jpg", "1.jpg"],
-        alignmentImages: [
-            ["3.jpg", "4.jpg"],
-            ["4.jpg", "1.jpg"],
-            ["1.jpg", "3.jpg"]
-        ]
-    }],
-    ["Item E", {
-        validationImages: ["6.jpg", "2.jpg", "5.jpg"],
-        alignmentImages: [
-            ["6.jpg", "2.jpg"],
-            ["2.jpg", "5.jpg"],
-            ["5.jpg", "6.jpg"]
-        ]
-    }]
-]);
+// Array of available images
+const availableImages = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg"];
+
+// Function to generate random data for the item
+function generateRandomItem(itemName) {
+    // Generate a random number of validation images (between 2 and 6)
+    const numValidationImages = Math.floor(Math.random() * 5) + 2; // Between 2 and 6
+    const validationImages = [];
+
+    // Select random images for validation
+    while (validationImages.length < numValidationImages) {
+        const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+        if (!validationImages.includes(randomImage)) {
+            validationImages.push(randomImage);
+        }
+    }
+
+    // Generate alignment pairs equal to the number of validation images
+    const alignmentImages = validationImages.map(() => {
+        const img1 = availableImages[Math.floor(Math.random() * availableImages.length)];
+        const img2 = availableImages[Math.floor(Math.random() * availableImages.length)];
+        return [img1, img2];
+    });
+
+    // Add the item data to the map
+    itemImageMap.set(itemName, {
+        validationImages: validationImages,
+        alignmentImages: alignmentImages,
+    });
+}
+
+// Create a map and populate it with random items
+const itemImageMap = new Map();
+
+// Generate random items and add to the map
+generateRandomItem("Item A");
+generateRandomItem("Item B");
+generateRandomItem("Item C");
+generateRandomItem("Item D");
+generateRandomItem("Item E");
+
+// Example: Log the map to check the result
+console.log(itemImageMap);

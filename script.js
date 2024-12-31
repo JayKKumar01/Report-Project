@@ -13,6 +13,9 @@ const nextPageButton = document.getElementById("next-page");
 const pageInfo = document.getElementById("page-info");
 const container = document.querySelector('.image-viewer');
 
+const contentValidationButton = document.querySelector('.content-validation');
+const alignmentValidationButton = document.querySelector('.alignment-validation');
+
 // Variables for pagination
 let currentPageIndex = 0;
 let totalPages = 1;
@@ -57,25 +60,56 @@ function loadImageAndAdjust(imageSrc) {
 function showPage(pageIndex) {
     if (pageIndex >= 0 && pageIndex < totalPages) {
         currentPageIndex = pageIndex;
-        loadImageAndAdjust(currentImageSet[pageIndex]);
+        let src = currentImageSet[pageIndex];
+        console.log(`src: ${src}`);
+        loadImageAndAdjust(src);
         pageInfo.innerText = `Page ${pageIndex + 1} of ${totalPages}`;
         prevPageButton.disabled = pageIndex === 0;
         nextPageButton.disabled = pageIndex === totalPages - 1;
         resetTransform();
     }
 }
-// Example of usage with new structure
-function showImageSet(itemName) {
+
+// Function to load images for the selected item and section (validation or alignment)
+// function showImageSet(itemName, validationType) {
+//     const itemData = itemImageMap.get(itemName);
+//     if (itemData && itemData[validationType] && itemData[validationType].length > 0) {
+//         if (validationType === "validationImages") {
+//             currentImageSet = itemData.validationImages.map(name => `items/${name}`);
+//             totalPages = currentImageSet.length;
+//         }
+//         else if (validationType === "alignmentImages") {
+//             // Load the first image of each pair in the alignmentImages array
+//             currentImageSet = itemData.alignmentImages.map(pair => `items/${pair[0]}`);
+//             totalPages = currentImageSet.length; // Total pages now equals the number of pairs
+//         }
+//         currentPageIndex = 0;
+//         showPage(currentPageIndex);
+//     } else {
+//         console.error(`No images found for item: ${itemName} under ${validationType}`);
+//     }
+// }
+
+// Generalized function to load the appropriate image set based on validation or alignment section
+function showImageSet(itemName, section) {
     const itemData = itemImageMap.get(itemName);
-    if (itemData && itemData.validationImages && itemData.validationImages.length > 0) {
-        currentImageSet = itemData.validationImages.map(name => `items/${name}`);
-        totalPages = currentImageSet.length;
+    if (!itemData) {
+        console.error("Item not found!");
+        return;
+    }
+
+    const imageSet = (section === 'alignment') 
+        ? itemData.alignmentImages.map(pair => `items/${pair[0]}`)  // Only first image of each pair for alignment
+        : itemData.validationImages.map(name => `items/${name}`);     // Full set for validation
+
+    if (imageSet.length > 0) {
+        currentImageSet = imageSet;
+        totalPages = imageSet.length;
         currentPageIndex = 0;
-        showPage(currentPageIndex);
-    } else {
-        console.error(`No images found for item: ${itemName}`);
+        showPage(currentPageIndex);  // Display the first page/image
     }
 }
+
 
 // Function to adjust the container size based on the image ratio
 function adjustContainerSize(image) {
@@ -89,6 +123,25 @@ function adjustContainerSize(image) {
     console.log(`Updated container size: Width = ${containerWidth}px, Height = ${containerHeight}px`);
 }
 
+// Variable to track the last clicked section (validation or alignment)
+let lastClickedSection = 'validation';  // Default: 'validation'
+let currentSelectedItem = null;  // This will hold the selected item
+
+// Function to switch button styles
+const switchButtonStyles = (activeButton, inactiveButton) => {
+    activeButton.style.backgroundColor = "#4caf50";  // Active green
+    inactiveButton.style.backgroundColor = "#9e9e9e";  // Inactive grey
+};
+
+// Event listener for section button clicks (both validation and alignment)
+const sectionButtonHandler = (selectedSection, activeButton, inactiveButton) => {
+    lastClickedSection = selectedSection;
+    switchButtonStyles(activeButton, inactiveButton);
+    showImageSet(currentSelectedItem, selectedSection);
+};
+
+
+
 // Populate the item list dynamically
 document.addEventListener("DOMContentLoaded", () => {
     const itemList = document.querySelector(".item-list ul");
@@ -98,7 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
         listItem.addEventListener("click", () => {
             document.querySelectorAll(".item-list li").forEach(li => li.classList.remove("selected"));
             listItem.classList.add("selected");
-            showImageSet(itemName);
+            currentSelectedItem = itemName;  // Set the currently selected item
+            showImageSet(itemName, lastClickedSection);  // Show the image set based on the last clicked section
         });
         itemList.appendChild(listItem);
     });
@@ -106,9 +160,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstItem = itemList.querySelector("li");
     if (firstItem) {
         firstItem.classList.add("selected");
-        showImageSet(firstItem.innerText);
+        currentSelectedItem = firstItem.innerText;  // Set the first item as selected
+        showImageSet(firstItem.innerText, "validationImages");
     }
+
+    // Set up the validation buttons
+    // Attach events for Content Validation and Alignment buttons
+    contentValidationButton.addEventListener("click", () => sectionButtonHandler('validation', contentValidationButton, alignmentValidationButton));
+    alignmentValidationButton.addEventListener("click", () => sectionButtonHandler('alignment', alignmentValidationButton, contentValidationButton));
+
 });
+
+
 
 // Function to update the transform property of the image
 function updateTransform() {
@@ -121,7 +184,7 @@ zoomSlider.addEventListener("input", () => {
     handleZoom();
 });
 
-function handleZoom(){
+function handleZoom() {
     const { maxX, maxY } = getMovementLimits();
     translateX = Math.max(-maxX, Math.min(maxX, translateX));
     translateY = Math.max(-maxY, Math.min(maxY, translateY));
@@ -146,7 +209,7 @@ function getMovementLimits() {
 }
 
 // Function to handle movement and restrict boundaries
-function moveImage(direction,factor) {
+function moveImage(direction, factor) {
     const { maxX, maxY } = getMovementLimits();
 
     if (direction === "left") {
@@ -164,26 +227,26 @@ function moveImage(direction,factor) {
 }
 
 // Attach event listeners for movement buttons
-document.getElementById("move-left").addEventListener("click", () => moveImage("left",1));
-document.getElementById("move-right").addEventListener("click", () => moveImage("right",1));
-document.getElementById("move-up").addEventListener("click", () => moveImage("up",1));
-document.getElementById("move-down").addEventListener("click", () => moveImage("down",1));
+document.getElementById("move-left").addEventListener("click", () => moveImage("left", 1));
+document.getElementById("move-right").addEventListener("click", () => moveImage("right", 1));
+document.getElementById("move-up").addEventListener("click", () => moveImage("up", 1));
+document.getElementById("move-down").addEventListener("click", () => moveImage("down", 1));
 
 // Keyboard event listeners for movement (arrow keys)
 document.addEventListener("keydown", (event) => {
     const moveFactor = 0.2;
     switch (event.key) {
         case "ArrowLeft":
-            moveImage("left",moveFactor);
+            moveImage("left", moveFactor);
             break;
         case "ArrowRight":
-            moveImage("right",moveFactor);
+            moveImage("right", moveFactor);
             break;
         case "ArrowUp":
-            moveImage("up",moveFactor);
+            moveImage("up", moveFactor);
             break;
         case "ArrowDown":
-            moveImage("down",moveFactor);
+            moveImage("down", moveFactor);
             break;
         case "+":
             zoomImage("in");

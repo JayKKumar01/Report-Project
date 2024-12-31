@@ -128,6 +128,10 @@ function updateTransform() {
 // Zoom slider functionality
 zoomSlider.addEventListener("input", () => {
     scale = parseFloat(zoomSlider.value);
+    handleZoom();
+});
+
+function handleZoom(){
     const { maxX, maxY } = getMovementLimits();
     translateX = Math.max(-maxX, Math.min(maxX, translateX));
     translateY = Math.max(-maxY, Math.min(maxY, translateY));
@@ -139,7 +143,7 @@ zoomSlider.addEventListener("input", () => {
 
     console.log("Zoom Adjusted:", { scale });
     updateTransform();
-});
+}
 
 // Function to calculate movement limits
 function getMovementLimits() {
@@ -174,3 +178,41 @@ document.getElementById("move-left").addEventListener("click", () => moveImage("
 document.getElementById("move-right").addEventListener("click", () => moveImage("right"));
 document.getElementById("move-up").addEventListener("click", () => moveImage("up"));
 document.getElementById("move-down").addEventListener("click", () => moveImage("down"));
+
+// Keyboard event listeners for movement (arrow keys)
+document.addEventListener("keydown", (event) => {
+    switch (event.key) {
+        case "ArrowLeft":
+            moveImage("left");
+            break;
+        case "ArrowRight":
+            moveImage("right");
+            break;
+        case "ArrowUp":
+            moveImage("up");
+            break;
+        case "ArrowDown":
+            moveImage("down");
+            break;
+        case "+":
+            zoomImage("in");
+            break;
+        case "-":
+            zoomImage("out");
+            break;
+        default:
+            break;
+    }
+});
+
+// Function to handle zoom in and zoom out
+function zoomImage(action) {
+    if (action === "in" && scale < 6) {  // Limit zoom in to 6x
+        scale += 0.1;
+    } else if (action === "out" && scale > 1) {  // Limit zoom out to 1x
+        scale -= 0.1;
+    }
+
+    handleZoom();
+    zoomSlider.value = scale;
+}

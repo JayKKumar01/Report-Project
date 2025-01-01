@@ -81,9 +81,20 @@ function showImageSet(itemName, section) {
         return;
     }
 
-    const imageSet = (section === 'alignment')
-        ? itemData.alignmentImages.map(pair => `items/${pair[0]}`)  // Only first image of each pair for alignment
-        : itemData.validationImages.map(name => `items/${name}`);     // Full set for validation
+    const getImageSet = (section, isPressAndHold, itemData) => {
+        if (section === 'alignment') {
+            return isPressAndHold
+                ? itemData.alignmentImages.map(pair => `items/${pair[0]}`) // First image of each pair
+                : itemData.alignmentImages.map(pair => `items/${pair[2]}`); // Third image of each pair (if exists)
+        } else {
+            return itemData.validationImages.map(name => `items/${name}`); // Full validation set
+        }
+    };
+    const imageSet = getImageSet(section, isPressAndHold, itemData);
+
+    // const imageSet = (section === 'alignment')
+    //     ? itemData.alignmentImages.map(pair => `items/${pair[0]}`)  // Only first image of each pair for alignment
+    //     : itemData.validationImages.map(name => `items/${name}`);     // Full set for validation
 
     if (imageSet.length > 0) {
         currentImageSet = imageSet;
@@ -267,15 +278,16 @@ function zoomImage(action) {
     zoomSlider.value = scale;
 }
 
-function handleActionMode(mode){
+function handleActionMode(mode) {
     isPressAndHold = mode === 'pressHold';
     console.log(`Action mode selected: ${mode}`);
-    if(isPressAndHold){
-        switchButtonStyles(pressHoldButton,highlightButton);
+    if (isPressAndHold) {
+        switchButtonStyles(pressHoldButton, highlightButton);
     } else {
-        switchButtonStyles(highlightButton,pressHoldButton);
+        switchButtonStyles(highlightButton, pressHoldButton);
     }
-    
+    showImageSet(currentSelectedItem, 'alignment');
+
 }
 
 // Function to handle alignment preview on hold
@@ -288,7 +300,7 @@ function setupAlignmentHold() {
 
 // Function to show the second image of the pair
 function showSecondImage(index) {
-    if (!isPressAndHold) return; // Ensure it's the alignment section
+    if (!isPressAndHold || lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
     const itemData = itemImageMap.get(currentSelectedItem);
     if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
         const secondImage = itemData.alignmentImages[index][1];
@@ -299,7 +311,7 @@ function showSecondImage(index) {
 
 // Function to reset the image to the first in the pair
 function resetImage(index) {
-    if (!isPressAndHold) return; // Ensure it's the alignment section
+    if (!isPressAndHold || lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
     const itemData = itemImageMap.get(currentSelectedItem);
     if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
         const firstImage = itemData.alignmentImages[index][0];

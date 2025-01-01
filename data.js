@@ -22,7 +22,7 @@ function generateRandomItem(itemName) {
         // const img2 = availableImages[Math.floor(Math.random() * availableImages.length)];
         const img1 = availableAllignImages[0];
         const img2 = availableAllignImages[1];
-        return [img1, img2];
+        return [img1, img2,img2];
     });
 
     // Add the item data to the map

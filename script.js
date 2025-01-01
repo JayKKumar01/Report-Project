@@ -6,6 +6,9 @@ let translateY = 0;
 let containerWidth = 854;
 let containerHeight = 480;
 
+const IDEAL_WIDTH = 682;
+const IDEAL_HEIGHT = 480;
+
 const zoomSlider = document.getElementById("zoom-slider");
 const displayedImage = document.getElementById("displayedImage");
 const prevPageButton = document.getElementById("prev-page");
@@ -108,7 +111,7 @@ function showImageSet(itemName, section) {
 // Function to adjust the container size based on the image ratio
 function adjustContainerSize(image) {
     const aspectRatio = image.width / image.height;
-    containerHeight = Math.floor(Math.min(480, 854 / aspectRatio));
+    containerHeight = Math.floor(Math.min(IDEAL_HEIGHT, IDEAL_WIDTH / aspectRatio));
     containerWidth = Math.floor(containerHeight * aspectRatio);
 
     container.style.width = `${containerWidth}px`;

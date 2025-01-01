@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Interactive Report</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <aside class="item-list">
@@ -18,6 +20,11 @@
             <div class="validation-buttons">
                 <button class="content-validation">Content Validation</button>
                 <button class="alignment-validation">Alignment Validation</button>
+            </div>
+            <!-- Div container for Press and Hold and Highlight buttons -->
+            <div class="action-mode-buttons" id="actionModeButtons">
+                <button id="pressHoldBtn">Press and Hold</button>
+                <button id="highlightBtn">Highlight</button>
             </div>
 
             <!-- Image Viewer -->
@@ -51,4 +58,5 @@
     <script src="movement.js"></script>
     <script src="pagination.js"></script> -->
 </body>
+
 </html>

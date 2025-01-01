@@ -67,13 +67,34 @@ p {
 
 /* Image Viewer Styling */
 .image-viewer {
-    position: relative; /* Needed for positioning buttons inside */
-    width: 640px;  /* Fixed width */
-    height: 360px; /* Fixed height for 16:9 ratio */
+    position: relative;
+    /* Needed for positioning buttons inside */
+    width: 640px;
+    /* Fixed width */
+    height: 360px;
+    /* Fixed height for 16:9 ratio */
     border-radius: 2px;
-    background-color: #000; /* Black background for contrast */
+    background-color: #000;
+    /* Black background for contrast */
     overflow: hidden;
     margin: auto;
+}
+
+.alignment-overlay-button {
+    position: absolute;
+    right: -50px;
+    /* Adjust placement relative to the container */
+    top: 50%;
+    /* Position in the middle */
+    transform: translateY(-50%);
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    /* Initially hidden */
 }
 
 .image-viewer img {
@@ -81,7 +102,7 @@ p {
     height: auto;
     /* object-fit: contain;
     transition: transform 0.1s ease-out; /* Smooth zoom transition */
-    /* transform-origin: center center; */ 
+    /* transform-origin: center center; */
 }
 
 /* Zoom Bar Styling */
@@ -109,7 +130,8 @@ p {
 /* Movement Buttons Inside Image Viewer */
 .move-btn {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
     color: white;
     border: none;
     border-radius: 50%;
@@ -124,7 +146,8 @@ p {
 }
 
 .move-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8); /* Darker on hover */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Darker on hover */
 }
 
 /* Specific Button Positions */
@@ -156,8 +179,10 @@ p {
 .validation-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px; /* Space between the buttons */
-    margin-bottom: 15px; /* Space below the buttons */
+    gap: 20px;
+    /* Space between the buttons */
+    margin-bottom: 15px;
+    /* Space below the buttons */
 }
 
 /* Individual Button Styling */
@@ -172,12 +197,14 @@ p {
 }
 
 .validation-buttons .content-validation {
-    background-color: #4caf50; /* Green */
+    background-color: #4caf50;
+    /* Green */
     color: white;
 }
 
 .validation-buttons .alignment-validation {
-    background-color: #9e9e9e; /* Grey */
+    background-color: #9e9e9e;
+    /* Grey */
     color: white;
 }
 
@@ -186,7 +213,36 @@ p {
 }
 
 .validation-buttons button:active {
-    transform: scale(0.95); /* Button click effect */
+    transform: scale(0.95);
+    /* Button click effect */
+}
+
+
+.action-mode-buttons {
+    margin-bottom: 15px;
+    display: none;
+}
+
+.action-mode-buttons button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* Styling for Press and Hold & Highlight buttons */
+#pressHoldBtn,
+#highlightBtn {
+    background-color: #9e9e9e;
+    color: white;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+#pressHoldBtn{
+    background-color: #4caf50;
 }
 
 /* Navigation Buttons Container */
@@ -194,8 +250,10 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* Space between buttons and page info */
-    margin-top: 10px; /* Space above the navigation */
+    gap: 20px;
+    /* Space between buttons and page info */
+    margin-top: 10px;
+    /* Space above the navigation */
 }
 
 .navigation-buttons button {
@@ -204,13 +262,15 @@ p {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #4a90e2; /* Blue for buttons */
+    background-color: #4a90e2;
+    /* Blue for buttons */
     color: white;
     transition: background-color 0.3s ease;
 }
 
 .navigation-buttons button:disabled {
-    background-color: #ccc; /* Gray for disabled state */
+    background-color: #ccc;
+    /* Gray for disabled state */
     cursor: not-allowed;
 }
 
@@ -226,8 +286,9 @@ p {
 
 /* Styling for selected item */
 .item-list li.selected {
-    background-color: #ffcc00; /* Yellow background for selected item */
-    color: #000; /* Black text for contrast */
+    background-color: #ffcc00;
+    /* Yellow background for selected item */
+    color: #000;
+    /* Black text for contrast */
     font-weight: bold;
 }
-

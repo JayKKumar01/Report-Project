@@ -15,6 +15,9 @@ const container = document.querySelector('.image-viewer');
 
 const contentValidationButton = document.querySelector('.content-validation');
 const alignmentValidationButton = document.querySelector('.alignment-validation');
+const actionModeButtons = document.getElementById("actionModeButtons");
+const pressHoldButton = document.getElementById("pressHoldBtn");
+const highlightButton = document.getElementById("highlightBtn");
 
 // Variables for pagination
 let currentPageIndex = 0;
@@ -78,7 +81,7 @@ function showImageSet(itemName, section) {
         return;
     }
 
-    const imageSet = (section === 'alignment') 
+    const imageSet = (section === 'alignment')
         ? itemData.alignmentImages.map(pair => `items/${pair[0]}`)  // Only first image of each pair for alignment
         : itemData.validationImages.map(name => `items/${name}`);     // Full set for validation
 
@@ -106,6 +109,7 @@ function adjustContainerSize(image) {
 // Variable to track the last clicked section (validation or alignment)
 let lastClickedSection = 'validation';  // Default: 'validation'
 let currentSelectedItem = null;  // This will hold the selected item
+let isPressAndHold = true;
 
 // Function to switch button styles
 const switchButtonStyles = (activeButton, inactiveButton) => {
@@ -118,6 +122,12 @@ const sectionButtonHandler = (selectedSection, activeButton, inactiveButton) => 
     lastClickedSection = selectedSection;
     switchButtonStyles(activeButton, inactiveButton);
     showImageSet(currentSelectedItem, selectedSection);
+
+    if (selectedSection !== 'validation') {
+        actionModeButtons.style.display = "block";
+    } else {
+        actionModeButtons.style.display = "none";
+    }
 };
 
 
@@ -148,6 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Attach events for Content Validation and Alignment buttons
     contentValidationButton.addEventListener("click", () => sectionButtonHandler('validation', contentValidationButton, alignmentValidationButton));
     alignmentValidationButton.addEventListener("click", () => sectionButtonHandler('alignment', alignmentValidationButton, contentValidationButton));
+
+    // Attach event listeners
+    pressHoldButton.addEventListener("click", () => handleActionMode("pressHold"));
+    highlightButton.addEventListener("click", () => handleActionMode("highlight"));
+
 
     setupAlignmentHold();
 });
@@ -252,6 +267,16 @@ function zoomImage(action) {
     zoomSlider.value = scale;
 }
 
+function handleActionMode(mode){
+    isPressAndHold = mode === 'pressHold';
+    console.log(`Action mode selected: ${mode}`);
+    if(isPressAndHold){
+        switchButtonStyles(pressHoldButton,highlightButton);
+    } else {
+        switchButtonStyles(highlightButton,pressHoldButton);
+    }
+    
+}
 
 // Function to handle alignment preview on hold
 function setupAlignmentHold() {
@@ -263,7 +288,7 @@ function setupAlignmentHold() {
 
 // Function to show the second image of the pair
 function showSecondImage(index) {
-    if (lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
+    if (!isPressAndHold) return; // Ensure it's the alignment section
     const itemData = itemImageMap.get(currentSelectedItem);
     if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
         const secondImage = itemData.alignmentImages[index][1];
@@ -274,7 +299,7 @@ function showSecondImage(index) {
 
 // Function to reset the image to the first in the pair
 function resetImage(index) {
-    if (lastClickedSection !== 'alignment') return; // Ensure it's the alignment section
+    if (!isPressAndHold) return; // Ensure it's the alignment section
     const itemData = itemImageMap.get(currentSelectedItem);
     if (itemData && itemData.alignmentImages && index < itemData.alignmentImages.length) {
         const firstImage = itemData.alignmentImages[index][0];
@@ -282,4 +307,3 @@ function resetImage(index) {
         loadImageAndAdjust(src);
     }
 }
-

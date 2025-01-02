@@ -11,22 +11,23 @@ body {
 .container {
     display: flex;
     width: 95%;
-    margin: 10px auto;
+    margin: 1rem auto;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .item-list {
-    width: 100px;
+    width: 10%;
     background-color: #4a90e2;
     color: #fff;
-    padding: 1.25rem;
-    border-radius: 8px 0 0 8px;
+    padding: 2rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    text-align: center;
 }
 
 .item-list h2 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 0;
 }
 
@@ -36,12 +37,11 @@ body {
 }
 
 .item-list li {
-    padding: 0.625rem;
-    margin: 0.3125rem 0;
+    padding: 1rem;
+    margin: 0.5rem 0;
     cursor: pointer;
     background-color: #357abd;
-    border-radius: 0.3125rem;
-    text-align: center;
+    border-radius: 0.5rem;
     transition: background-color 0.3s ease;
 }
 
@@ -56,8 +56,9 @@ body {
 }
 
 .content {
+    width: 90%;
     flex-grow: 1;
-    padding: 1.25rem;
+    padding: 1rem;
     text-align: center;
 }
 
@@ -75,12 +76,12 @@ p {
 /* Image Viewer Styling */
 .image-viewer {
     position: relative;
-    width: 40rem;
-    height: 22.5rem;
-    border-radius: 2px;
+    width: 60%;
+    height: 30vw;
+    border-radius: 0.125rem;
     background-color: #000;
     overflow: hidden;
-    margin: auto;
+    margin: 1rem auto;
 }
 
 .image-viewer img {
@@ -90,25 +91,28 @@ p {
 
 /* Parent Container for Image Viewer and Report Image */
 #image-container {
+    width: 100%;
+    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin: auto;
-    gap: 0.625rem;
+    gap: 0.25rem;
 }
 
 /* Report Image View */
 .report-image-view {
-    width: 30rem; /* A4 aspect ratio width */
-    height: 30rem;
-    border-radius: 2px;
+    width: 35%;
+    height: 35%;
+    border-radius: 0.125rem;
     background-color: #222;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-end;
     border: 1px solid #333;
+    margin-top: 1rem;
 }
 
 /* Report Image Styling */
@@ -123,7 +127,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.625rem;
+    gap: 1rem;
 }
 
 .zoom-controls label {
@@ -132,7 +136,7 @@ p {
 }
 
 .zoom-controls input[type="range"] {
-    width: 18.75rem;
+    width: 30vw;
     cursor: pointer;
 }
 
@@ -143,9 +147,9 @@ p {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.125rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,27 +161,25 @@ p {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.move-up { top: 10px; left: 50%; transform: translateX(-50%); }
-.move-down { bottom: 10px; left: 50%; transform: translateX(-50%); }
-.move-left { top: 50%; left: 10px; transform: translateY(-50%); }
-.move-right { top: 50%; right: 10px; transform: translateY(-50%); }
+.move-up { top: 1rem; left: 50%; transform: translateX(-50%); }
+.move-down { bottom: 1rem; left: 50%; transform: translateX(-50%); }
+.move-left { top: 50%; left: 1rem; transform: translateY(-50%); }
+.move-right { top: 50%; right: 1rem; transform: translateY(-50%); }
 
 /* Validation Buttons */
 .validation-buttons {
     display: flex;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.validation-buttons button,
-#pressHoldBtn,
-#highlightBtn {
-    padding: 0.625rem 1.25rem;
+.validation-buttons button{
+    padding: 1rem 1rem;
     font-size: 1rem;
     font-weight: bold;
     border: none;
-    border-radius: 0.3125rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -210,15 +212,15 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: .25rem;
 }
 
 .navigation-buttons button {
-    padding: 0.625rem 1.25rem;
+    padding: 1rem 1rem;
     font-size: 1rem;
     border: none;
-    border-radius: 0.3125rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     background-color: #4a90e2;
     color: white;
@@ -236,17 +238,17 @@ p {
 
 /* Action Mode Buttons */
 .action-mode-buttons {
-    margin-bottom: 1rem;
     display: none;
 }
 
 .action-mode-buttons button {
-    padding: 0.3125rem 0.625rem;
-    margin: 0.125rem;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: bold;
     border: none;
-    border-radius: 0.125rem;
+    border-radius: 0.2rem;
     cursor: pointer;
-    font-size: 0.8125rem;
+    transition: background-color 0.3s ease;
 }
 
 #pressHoldBtn {

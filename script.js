@@ -1,13 +1,20 @@
+// Constants for screen resolution
+const SCREEN_WIDTH = window.screen.width;  // Screen width in pixels
+const SCREEN_HEIGHT = window.screen.height; // Screen height in pixels
+
+const RES_FACTOR = 864;
+
 // Default transformation values
 let scale = 1;
 let translateX = 0;
 let translateY = 0;
 
-let containerWidth = 854;
-let containerHeight = 480;
+let containerWidth = 640;
+let containerHeight = 360;
 
-const IDEAL_WIDTH = 682;
-const IDEAL_HEIGHT = 480;
+
+const IDEAL_HEIGHT = Math.floor(SCREEN_HEIGHT * (480 / RES_FACTOR));
+const IDEAL_WIDTH = IDEAL_HEIGHT * 1.42;
 
 const zoomSlider = document.getElementById("zoom-slider");
 const displayedImage = document.getElementById("displayedImage");

@@ -21,6 +21,8 @@ const alignmentValidationButton = document.querySelector('.alignment-validation'
 const actionModeButtons = document.getElementById("actionModeButtons");
 const pressHoldButton = document.getElementById("pressHoldBtn");
 const highlightButton = document.getElementById("highlightBtn");
+const reportImageView = document.getElementById("report-image-view");
+const reportImageElement = document.getElementById("reportImage");
 
 // Variables for pagination
 let currentPageIndex = 0;
@@ -78,7 +80,6 @@ function showPage(pageIndex) {
             loadImageAndAdjust(mainImageSrc);
 
             // Load report image
-            const reportImageElement = document.getElementById("reportImage");
             reportImageElement.src = reportImageSrc;
         } else {
             let src = currentImageSet[pageIndex];
@@ -152,10 +153,12 @@ const sectionButtonHandler = (selectedSection, activeButton, inactiveButton) => 
     switchButtonStyles(activeButton, inactiveButton);
     showImageSet(currentSelectedItem, selectedSection);
 
-    if (selectedSection !== 'validation') {
+    if (selectedSection === 'alignment') {
         actionModeButtons.style.display = "block";
+        reportImageView.style.display = "none";
     } else {
         actionModeButtons.style.display = "none";
+        reportImageView.style.display = "block";
     }
 };
 

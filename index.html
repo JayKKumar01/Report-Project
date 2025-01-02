@@ -29,27 +29,31 @@
 
             <!-- Image Viewer -->
             <div id="image-container">
-                <div class="image-viewer">
-                    <img id="displayedImage" alt="Main Image">
-                    <!-- Movement Buttons -->
-                    <button id="move-up" class="move-btn move-up">↑</button>
-                    <button id="move-down" class="move-btn move-down">↓</button>
-                    <button id="move-left" class="move-btn move-left">←</button>
-                    <button id="move-right" class="move-btn move-right">→</button>
+                <div id="main-image-view">
+                    <div class="image-viewer">
+                        <img id="displayedImage" alt="Main Image">
+                        <!-- Movement Buttons -->
+                        <button id="move-up" class="move-btn move-up">↑</button>
+                        <button id="move-down" class="move-btn move-down">↓</button>
+                        <button id="move-left" class="move-btn move-left">←</button>
+                        <button id="move-right" class="move-btn move-right">→</button>
 
+
+                    </div>
+                    <!-- Zoom Controls -->
+                    <div class="zoom-controls">
+                        <label for="zoom-slider">Zoom:</label>
+                        <input id="zoom-slider" type="range" min="1" max="6" step="0.1" value="1">
+                    </div>
 
                 </div>
                 <!-- Report Image -->
-                <div class="report-image-view">
+                <div class="report-image-view" id="report-image-view">
                     <img id="reportImage" alt="Report Image">
                 </div>
-            </div>
 
 
-            <!-- Zoom Controls -->
-            <div class="zoom-controls">
-                <label for="zoom-slider">Zoom:</label>
-                <input id="zoom-slider" type="range" min="1" max="6" step="0.1" value="1">
+
             </div>
 
             <!-- Navigation Buttons -->

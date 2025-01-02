@@ -21,12 +21,12 @@ body {
     width: 100px;
     background-color: #4a90e2;
     color: #fff;
-    padding: 20px;
+    padding: 1.25rem;
     border-radius: 8px 0 0 8px;
 }
 
 .item-list h2 {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     margin-top: 0;
 }
 
@@ -36,11 +36,11 @@ body {
 }
 
 .item-list li {
-    padding: 10px;
-    margin: 5px 0;
+    padding: 0.625rem;
+    margin: 0.3125rem 0;
     cursor: pointer;
     background-color: #357abd;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     text-align: center;
     transition: background-color 0.3s ease;
 }
@@ -57,26 +57,26 @@ body {
 
 .content {
     flex-grow: 1;
-    padding: 20px;
+    padding: 1.25rem;
     text-align: center;
 }
 
 h1, .navigation-buttons #page-info {
     color: #333;
-    font-size: 1em;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 p {
     color: #555;
-    font-size: 1.1em;
+    font-size: 1.1rem;
 }
 
 /* Image Viewer Styling */
 .image-viewer {
     position: relative;
-    width: 640px;
-    height: 360px;
+    width: 40rem;
+    height: 22.5rem;
     border-radius: 2px;
     background-color: #000;
     overflow: hidden;
@@ -92,50 +92,47 @@ p {
 #image-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Aligns images to the top */
-    width: auto; /* Adjusts dynamically based on the child content */
+    align-items: flex-start;
     margin: auto;
+    gap: 0.625rem;
 }
 
 /* Report Image View */
 .report-image-view {
-    width: 480px; /* Width = A4 aspect ratio (210mm / 297mm ~ 0.707) */
-    height: 480px;
+    width: 30rem; /* A4 aspect ratio width */
+    height: 30rem;
     border-radius: 2px;
-    background-color: #222; /* Darker background for contrast */
-    overflow-y: auto; /* Enables vertical scrolling */
-    overflow-x: hidden; /* Prevents horizontal scrolling */
+    background-color: #222;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    border: 1px solid #333; /* Subtle border for clarity */
+    border: 1px solid #333;
 }
 
 /* Report Image Styling */
 .report-image-view img {
-    width: 100%; /* Adjusts to the width of the container */
-    height: auto; /* Maintains aspect ratio */
+    width: 100%;
+    height: auto;
 }
-
-
 
 /* Zoom Controls */
 .zoom-controls {
-    background-color: #dfb735;
-    margin: 10px auto;
+    margin: 1rem auto;
     display: flex;
-    justify-content: flex-start; /* Align items to the start (left) */
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .zoom-controls label {
-    font-size: 1em;
+    font-size: 1rem;
     color: #333;
 }
 
 .zoom-controls input[type="range"] {
-    width: 300px;
+    width: 18.75rem;
     cursor: pointer;
 }
 
@@ -146,9 +143,9 @@ p {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.125rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,16 +166,18 @@ p {
 .validation-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-bottom: 15px;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
 }
 
-.validation-buttons button {
-    padding: 10px 20px;
-    font-size: 1em;
+.validation-buttons button,
+#pressHoldBtn,
+#highlightBtn {
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -189,7 +188,7 @@ p {
 }
 
 .validation-buttons .alignment-validation,
-#pressHoldBtn, 
+#pressHoldBtn,
 #highlightBtn {
     background-color: #9e9e9e;
     color: white;
@@ -211,16 +210,15 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    margin-top: 10px;
+    gap: 1.25rem;
+    margin-top: 1rem;
 }
 
-
 .navigation-buttons button {
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     cursor: pointer;
     background-color: #4a90e2;
     color: white;
@@ -238,19 +236,19 @@ p {
 
 /* Action Mode Buttons */
 .action-mode-buttons {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
     display: none;
 }
 
 .action-mode-buttons button {
-    padding: 5px 10px;
-    margin: 2px;
+    padding: 0.3125rem 0.625rem;
+    margin: 0.125rem;
     border: none;
-    border-radius: 2px;
+    border-radius: 0.125rem;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
-#pressHoldBtn{
+#pressHoldBtn {
     background-color: #4caf50;
 }

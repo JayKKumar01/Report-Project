@@ -66,9 +66,28 @@ function loadImageAndAdjust(imageSrc) {
 function showPage(pageIndex) {
     if (pageIndex >= 0 && pageIndex < totalPages) {
         currentPageIndex = pageIndex;
-        let src = currentImageSet[pageIndex];
-        console.log(`src: ${src}`);
-        loadImageAndAdjust(src);
+
+        if (lastClickedSection === 'validation') {
+            const currentPair = currentImageSet[pageIndex];
+            const mainImageSrc = currentPair[0]; // First image in the pair
+            const reportImageSrc = currentPair[1]; // Second image in the pair
+
+            console.log(`Main Image: ${mainImageSrc}, Report Image: ${reportImageSrc}`);
+
+            // Load main image
+            loadImageAndAdjust(mainImageSrc);
+
+            // Load report image
+            const reportImageElement = document.getElementById("reportImage");
+            reportImageElement.src = reportImageSrc;
+        } else {
+            let src = currentImageSet[pageIndex];
+            console.log(`src: ${src}`);
+            loadImageAndAdjust(src);
+        }
+
+
+
         pageInfo.innerText = `Page ${pageIndex + 1} of ${totalPages}`;
         prevPageButton.disabled = pageIndex === 0;
         nextPageButton.disabled = pageIndex === totalPages - 1;
@@ -87,17 +106,13 @@ function showImageSet(itemName, section) {
     const getImageSet = (section, isPressAndHold, itemData) => {
         if (section === 'alignment') {
             return isPressAndHold
-                ? itemData.alignmentImages.map(pair => `items/${pair[0]}`) // First image of each pair
-                : itemData.alignmentImages.map(pair => `items/${pair[2]}`); // Third image of each pair (if exists)
+                ? itemData.alignmentImages.map(arr => `items/${arr[0]}`) // First image of each pair
+                : itemData.alignmentImages.map(arr => `items/${arr[2]}`); // Third image of each pair (if exists)
         } else {
-            return itemData.validationImages.map(name => `items/${name}`); // Full validation set
+            return itemData.validationImages.map(arr => [`items/${arr[0]}`, `items/${arr[1]}`]); // First and second images for validation
         }
     };
     const imageSet = getImageSet(section, isPressAndHold, itemData);
-
-    // const imageSet = (section === 'alignment')
-    //     ? itemData.alignmentImages.map(pair => `items/${pair[0]}`)  // Only first image of each pair for alignment
-    //     : itemData.validationImages.map(name => `items/${name}`);     // Full set for validation
 
     if (imageSet.length > 0) {
         currentImageSet = imageSet;

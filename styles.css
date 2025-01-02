@@ -121,12 +121,12 @@ p {
 
 /* Zoom Controls */
 .zoom-controls {
+    background-color: #dfb735;
     margin: 10px auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Align items to the start (left) */
     align-items: center;
     gap: 10px;
-    width: 640px;
 }
 
 .zoom-controls label {
